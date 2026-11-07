@@ -1,16 +1,175 @@
 # Operative UI-Designsprache
 
-Gestalte ruhig, präzise und einsatzorientiert. Information, Ort und Zustand stehen vor Dekoration.
+Dieses Designsystem ist verbindlich für daten- und situationsorientierte Anwendungen, unabhängig vom Fachgebiet. Es vermittelt eine ruhige, präzise und belastbare Benutzeroberfläche: Informationshierarchie, Zustand und Handlungsfähigkeit stehen vor Dekoration.
 
-- Komposition: Eine Hauptaufgabe pro Ansicht. Karte oder Lageinformation ist die dominante Fläche; Werkzeuge bleiben am Rand. Nutze Vollflächen mit Safe Areas statt schwebender Kartenraster.
-- Hierarchie: Zeige kritischen Zustand und primäre Kennzahl zuerst, unterstützende Kontextwerte danach. Nutze kleine Versalien für Rubriken, klare metrische Zahlen und zurückhaltende Sekundärtexte.
-- Flächen: Neutrale Flächen dominieren. Verwende transparente oder leicht getönte Overlays über Karte/Bild und feine Divider statt sichtbarer Rahmen. Vollständig deckende Flächen nur für fokussierte Formulare, Bestätigungen oder Listen.
-- Farbe: Definiere semantische Tokens für Grundfläche, Primär-/Sekundärtext, Marke sowie Warnung und Fehler. Nutze höchstens einen Markenakzent pro Ansicht; Statusfarben tragen ausschließlich Statusbedeutung.
-- Verläufe und Unschärfe: Verläufe dürfen nur leise eine Overlay-Kante in die Karte überführen. Unschärfe ist auf situative Header oder Werkzeugleisten begrenzt und darf Kontrast oder Kartenlesbarkeit nicht mindern. Keine dekorativen Schatten oder Verläufe.
-- Typografie: Nutze eine technische, gut lesbare Sans-/Monospace-Kombination sparsam. Zahlen erhalten tabellarische Ziffern. Vermeide unnötige Fettschrift, Großüberschriften und lange Textblöcke in Lageansichten.
-- Interaktion: Jede Touchaktion misst mindestens 44×44 px und besitzt bei Deaktivierung einen erklärten Grund. Auf Mobilgeräten steht eine intuitive, situationsgerechte Touchsteuerung im Vordergrund; Maus- und Tastaturbedienung sind dort nicht zwingend erforderlich. Icon-only-Aktionen brauchen einen zugänglichen Namen.
-- Icon-Buttons: Über Karten, Bildern, Live-Inhalten oder wechselnden Hintergründen erhalten Icon-Buttons eine neutrale, kontrastierende Fläche und bei Bedarf eine dezente Border, damit sie jederzeit erkennbar und bedienbar bleiben. Auf ruhigen, einfarbigen oder klar abgegrenzten Flächen sind sie flache Icon-Controls ohne permanente Hintergrundfläche und ohne Border. Beide Varianten bieten mindestens 44×44 px Touchfläche, einen zugänglichen Namen und einen deutlich sichtbaren Tastaturfokus. Hintergrund, Border oder Schatten sind nur zulässig, wenn sie Kontrast, Abgrenzung oder Bedienbarkeit gegenüber dem Untergrund verbessern, nie allein zur Dekoration. Für Schließen-, Zurück- und vergleichbare Sekundäraktionen ist die flache Variante Standard; die umschlossene Variante erfordert eine Begründung durch Untergrund oder Sichtbarkeit.
-- Bewegung: Übergänge dienen nur der Orientierung, bleiben kurz und respektieren reduzierte Bewegung. Kontinuierliche Livewerte wie Position, Kurs, Lage und Diagramme werden zwischen gültigen Zeitstempeln zeitbasiert interpoliert, damit die Darstellung flüssig bleibt; Zustandswechsel und Warnungen werden nie interpoliert. Timer, Sensoren und Animationen laufen nur für sichtbare, aktive Flächen.
-- Themen: Jede neue Fläche wird für Dunkel, Hell und Automatik entwickelt. Neutralflächen bleiben dominant; Kontrast und Zustandsbedeutung müssen in allen Themes erhalten bleiben.
-- Operationalität: Zeige live, veraltet, nicht verfügbar und fehlgeschlagen unterscheidbar. Teile Positionen nur validiert und mit verfügbarer Genauigkeit, Zeit und Kontext.
-- Prüfung: Prüfe pro Erweiterung beide Themes, kleinen Touchscreen, Tastaturfokus, Offline-/Fehlerzustand und `prefers-reduced-motion`.
+## Gestaltungsziel
+
+- Eine Hauptaufgabe pro Ansicht. Der primäre Inhalt erhält die dominante Fläche; Werkzeuge bleiben nachrangig.
+- Kritischer Zustand und wichtigste Information sind zuerst sichtbar, unterstützende Informationen folgen danach.
+- Große ruhige Flächen und hohe Informationsdichte werden verbunden. Vollflächen mit Safe Areas sind gleichförmigen Rastern schwebender Flächen vorzuziehen.
+- Zustände werden immer zusätzlich zur Farbe durch Text oder Symbol vermittelt.
+- Keine dekorative, futuristische, verspielte oder SaaS-artige Optik verwenden.
+
+## Themes und verbindliche Tokens
+
+Alle Oberflächen unterstützen Dark, Light und Automatik. Automatik folgt der Systempräferenz und wendet dabei den vollständigen Dark- oder Light-Token-Satz an. Außerhalb dieser Tokens sind keine zusätzlichen Farben, Abstände, Radien, Schriftgrößen, Schatten oder Unschärfewerte zulässig.
+
+```css
+:root,
+[data-theme="dark"] {
+  --color-background: #080808;
+  --color-surface: #101010;
+  --color-surface-raised: #141414;
+  --color-text-primary: #ECECEC;
+  --color-text-secondary: #A0A0A0;
+  --color-text-muted: #6F6F6F;
+  --color-border: #303030;
+  --color-border-subtle: #242424;
+  --color-icon: #D8D8D8;
+  --color-overlay-background: rgba(8, 8, 8, 0.84);
+  --color-visual-base: #151515;
+  --color-visual-detail: #242424;
+
+  --color-critical: #FF3B0A;
+  --color-critical-surface: rgba(255, 59, 10, 0.20);
+  --color-warning: #C99526;
+  --color-positive: #16B83D;
+  --color-active: #00B83A;
+}
+
+[data-theme="light"] {
+  --color-background: #F6F6F6;
+  --color-surface: #FFFFFF;
+  --color-surface-raised: #EBEBEB;
+  --color-text-primary: #171717;
+  --color-text-secondary: #606060;
+  --color-text-muted: #707070;
+  --color-border: #B8B8B8;
+  --color-border-subtle: #D7D7D7;
+  --color-icon: #252525;
+  --color-overlay-background: rgba(246, 246, 246, 0.84);
+  --color-visual-base: #EFEFEF;
+  --color-visual-detail: #D6D6D6;
+
+  --color-critical: #B72C08;
+  --color-critical-surface: rgba(183, 44, 8, 0.16);
+  --color-warning: #7A5700;
+  --color-positive: #087A29;
+  --color-active: #007A29;
+}
+
+:root {
+--font-family-primary: "Cascadia Code", ui-monospace, monospace;
+--font-wordmark-mobile: 48px;
+--font-wordmark-desktop: 64px;
+--font-hero-mobile: 48px;
+--font-hero-desktop: 64px;
+--font-metric-mobile: 32px;
+--font-metric-desktop: 48px;
+--font-section-title: 20px;
+--font-body: 16px;
+--font-meta: 14px;
+--font-label: 12px;
+--line-height-body: 1.5;
+--line-height-compact: 1.35;
+--letter-spacing-wordmark: 0.24em;
+--letter-spacing-label: 0.12em;
+
+--space-8: 8px;
+--space-16: 16px;
+--space-24: 24px;
+--space-32: 32px;
+--space-48: 48px;
+--space-64: 64px;
+--page-padding-mobile: 24px;
+--page-padding-tablet: 32px;
+--page-padding-desktop: 48px;
+
+--border-width: 1px;
+--radius-none: 0px;
+--radius-overlay: 24px;
+--overlay-blur: 16px;
+--transition-duration: 160ms;
+--size-icon: 24px;
+--size-target-min: 44px;
+--stroke-emphasis: 6px;
+}
+```
+
+`--color-active` ist der einzige Markenakzent und kennzeichnet ausschließlich Markenidentität sowie aktive Auswahl oder Navigation. Warnung, Erfolg und Fehler behalten ausschließlich ihre Statusbedeutung.
+
+## Typografie
+
+Cascadia Code ist die primäre Schriftfamilie für die Benutzeroberfläche. Zahlen verwenden tabellarische Ziffern.
+
+- Wortmarken und zentraler Systemname: `--font-wordmark-*`, Gewicht 400.
+- Primäre Inhaltsbezeichnungen: `--font-hero-*`, Gewicht 400.
+- Primäre Werte: `--font-metric-*`, Gewicht 500.
+- Abschnittsüberschriften: `--font-section-title`, Gewicht 600, Großbuchstaben.
+- Feldlabels: `--font-label`, Großbuchstaben, `--letter-spacing-label`, `--color-text-secondary`.
+- Sekundäre Angaben: `--font-meta`, `--color-text-secondary`.
+- Standardinhalt: `--font-body`, `--color-text-primary`.
+- Gedämpfte oder sekundäre Inhalte: `--color-text-muted`.
+- Keine Schriftgewichte über 600, keine unnötige Fettschrift und keine unnötig langen Textblöcke verwenden.
+
+## Responsive Layout
+
+- Mobil: bis einschließlich 767 px; einspaltig und nach Informationspriorität angeordnet.
+- Tablet: 768 px bis einschließlich 1023 px; zwei Spalten im Verhältnis 2:1.
+- Desktop: ab 1024 px; primäre Arbeitsfläche 66,666 %, Detailspalte 33,333 %.
+- Eng verbundene Elemente: `--space-8`; innerhalb einer Komponente: `--space-16`; zwischen Komponenten: `--space-24`; zwischen Abschnitten: `--space-48`; zwischen Hauptbereichen: `--space-64`.
+- Der primäre Inhalt erhält die größte verfügbare Fläche.
+- Lange vertikale und horizontale Linien trennen Bereiche mit `--border-width solid --color-border`.
+
+## Oberflächen und Tiefe
+
+- Standardhintergrund ist `--color-background`; erhöhte, nicht schwebende Bereiche verwenden `--color-surface`.
+- Abgegrenzte Inhaltsbereiche sind rechteckig, transparent oder `--color-surface`, mit `--color-border` gerahmt. Sie werden nur für direkt vergleichbare Informationen verwendet.
+- Schwebende Overlays verwenden `--radius-overlay`, `--color-overlay-background` und `--overlay-blur`. Alle anderen Bereiche bleiben scharf.
+- Feine Divider sind sichtbaren Rahmen für allgemeine Layoutbereiche vorzuziehen. Vollständig deckende Flächen sind fokussierten Interaktionen vorbehalten.
+- Dezente Verläufe sind ausschließlich erlaubt, um eine Overlay-Kante in einen dynamischen Hintergrund zu überführen. Sie dürfen Kontrast oder Lesbarkeit nicht beeinträchtigen.
+- Keine dekorativen Schatten, keine Gradients außerhalb dieser Overlay-Überblendung, keine stark gerundeten Flächen, Pill-Buttons oder Glassmorphism-Komponenten verwenden.
+
+## Komponenten
+
+### Wiederholte Inhaltsbereiche
+
+- Wiederholte Inhaltsbereiche besitzen mindestens `--space-24` vertikalen Innenabstand und sind durch `--color-border-subtle` getrennt.
+- Sekundäre Angaben, primärer Inhalt und wichtigste Information erhalten eine klare visuelle Rangfolge.
+- Zustände sind zusätzlich zur Farbe textlich oder durch ein Symbol benannt.
+- Direkt vergleichbare Informationen nutzen `--space-24` Innenabstand, `--border-width solid --color-border` und `--radius-none`. Die wichtigste Information ist dominant; die Bezeichnung bleibt klein und gedämpft.
+
+### Buttons, Navigation und Fokus
+
+- Alle interaktiven Ziele sind mindestens `--size-target-min` × `--size-target-min` groß.
+- Standardaktionen verwenden Text oder technische Linienicons in `--color-icon`; Icons sind `--size-icon` groß und ungefüllt.
+- Sekundäre Buttons verwenden `--border-width solid --color-border`, transparenten Hintergrund und `--radius-none`.
+- Schließen-, Zurück- und vergleichbare Sekundäraktionen sind standardmäßig flache Icon-Controls ohne permanente Hintergrundfläche und ohne Border. Eine umschlossene Variante erfordert eine Begründung durch Untergrund oder Sichtbarkeit.
+- Destruktive oder kritische Aktionen verwenden `--color-critical` für Text oder Icon. Vollflächig kritisch ist nur eine ausdrücklich bestätigte irreversible Aktion.
+- Untere Navigation hat vier bis sechs gleich breite Ziele; das aktive Ziel wird ausschließlich mit `--color-active` markiert.
+- Auf wechselndem oder kontrastarmem Hintergrund erhalten Icon-Buttons eine neutrale, kontrastierende Fläche und bei Bedarf eine dezente Border. Auf ruhigen, einfarbigen oder klar abgegrenzten Flächen bleiben sie flach.
+- Jede Icon-only-Aktion besitzt einen zugänglichen Namen. Alle interaktiven Ziele erhalten einen sichtbaren Fokus über `--color-active` und `--border-width`.
+- Hover nutzt `--color-surface-raised`; Pressed nutzt `--color-border`; Selected nutzt `--color-active`. Deaktivierte Aktionen sind nicht ausführbar und nennen den Grund unmittelbar an der Aktion.
+
+### Status und Visualisierungen
+
+- Live oder positiv: `--color-positive`; aktive Auswahl oder Navigation: `--color-active`; Warnung: `--color-warning`; kritisch: `--color-critical`.
+- Nicht verfügbar, veraltet, geschätzt und fehlerhaft werden immer explizit textlich bezeichnet. Kritische Bereiche dürfen `--color-critical-surface` nutzen.
+- Komplexe Visualisierungen verwenden `--color-visual-base` und `--color-visual-detail`; Beschriftungen nutzen `--color-text-secondary`. Hervorgehobene Elemente liegen visuell über Hintergrund und Beschriftungen.
+- Hervorgehobene Verbindungselemente verwenden genau eine semantische Farbe mit `--stroke-emphasis` Linienbreite.
+- Datenvisualisierungen verwenden `--color-background`, Raster in `--color-border-subtle` und genau eine semantische Datenfarbe. Sekundäre Daten nutzen `--color-text-muted`; aktuelle oder kritische Daten nutzen `--color-critical`.
+
+## Interaktion, Bewegung und Operationalität
+
+- Standardtransition: `--transition-duration ease-out`. Es gibt keine federnden, dekorativen oder dauerhaften Animationen.
+- Bei `prefers-reduced-motion` sind Transitionen deaktiviert.
+- Kontinuierlich aktualisierte Werte werden nur zwischen gültigen Zeitstempeln zeitbasiert interpoliert. Zustandswechsel und Warnungen werden nie interpoliert.
+- Automatisch aktualisierte Inhalte und Interpolation laufen nur auf sichtbaren, aktiven Flächen.
+- Lade-, Verbindungs-, Fehler- und Aktualisierungszustände sind sichtbar und textlich eindeutig.
+
+## Prüfung und Governance
+
+- Jede Erweiterung wird in Dark, Light und Automatik geprüft, einschließlich Kontrast, Statusverständlichkeit und ausschließlich tokenbasierter Werte.
+- Prüfe die Breakpoints 767, 768, 1023 und 1024 px, kleinen Touchscreen, Tastaturfokus, Verbindungs-/Fehlerzustände, Icon-Buttons auf ruhigen und wechselnden Hintergründen sowie `prefers-reduced-motion`.
+- Prüfe Livewert-Interpolation mit gültigen und fehlenden Zeitstempeln sowie Zustandswechseln.
+- Neue visuelle Werte, Tokens oder Komponentenvarianten dürfen nur verwendet werden, nachdem sie als verbindlicher Token oder dokumentierte Komponente in dieser Datei ergänzt wurden.
