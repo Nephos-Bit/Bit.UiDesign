@@ -1,6 +1,6 @@
-# Operative UI-Designsprache
+# Argos – operative UI-Designsprache
 
-Dieses Designsystem ist verbindlich für daten- und situationsorientierte Anwendungen, unabhängig vom Fachgebiet. Es vermittelt eine ruhige, präzise und belastbare Benutzeroberfläche: Informationshierarchie, Zustand und Handlungsfähigkeit stehen vor Dekoration.
+Dieses Designsystem beschreibt verbindlich die dargestellte Argos-Anwendung. Es vermittelt eine ruhige, präzise und belastbare Einsatzoberfläche: Informationshierarchie, Zustand und Handlungsfähigkeit stehen vor Dekoration. Allgemeine SaaS-, Dashboard- oder Karten-UI-Konventionen gelten nicht, wenn sie dieser Referenz widersprechen.
 
 ## Gestaltungsziel
 
@@ -9,6 +9,7 @@ Dieses Designsystem ist verbindlich für daten- und situationsorientierte Anwend
 - Große ruhige Flächen und hohe Informationsdichte werden verbunden. Vollflächen mit Safe Areas sind gleichförmigen Rastern schwebender Flächen vorzuziehen.
 - Zustände werden immer zusätzlich zur Farbe durch Text oder Symbol vermittelt.
 - Keine dekorative, futuristische, verspielte oder SaaS-artige Optik verwenden.
+- Die Anwendung wirkt wie ein technisches Lageinstrument: flächig, dunkel, monospaced, mit wenigen klaren Zustandsfarben und ohne visuelle Lautstärke.
 
 ## Themes und verbindliche Tokens
 
@@ -35,6 +36,12 @@ Alle Oberflächen unterstützen Dark, Light und Automatik. Automatik folgt der S
   --color-warning: #C99526;
   --color-positive: #16B83D;
   --color-active: #00B83A;
+
+  --color-route: #FF2400;
+  --color-location: #FF3B0A;
+  --color-map-label: #8B8B8B;
+  --color-map-road: #2A2A2A;
+  --color-map-building: #1B1B1B;
 }
 
 [data-theme="light"] {
@@ -56,6 +63,12 @@ Alle Oberflächen unterstützen Dark, Light und Automatik. Automatik folgt der S
   --color-warning: #7A5700;
   --color-positive: #087A29;
   --color-active: #007A29;
+
+  --color-route: #C92808;
+  --color-location: #B72C08;
+  --color-map-label: #666666;
+  --color-map-road: #C7C7C7;
+  --color-map-building: #E2E2E2;
 }
 
 :root {
@@ -89,6 +102,7 @@ Alle Oberflächen unterstützen Dark, Light und Automatik. Automatik folgt der S
 --radius-none: 0px;
 --radius-overlay: 24px;
 --overlay-blur: 16px;
+--overlay-gradient-depth: 160px;
 --transition-duration: 160ms;
 --size-icon: 24px;
 --size-target-min: 44px;
@@ -96,11 +110,11 @@ Alle Oberflächen unterstützen Dark, Light und Automatik. Automatik folgt der S
 }
 ```
 
-`--color-active` ist der einzige Markenakzent und kennzeichnet ausschließlich Markenidentität sowie aktive Auswahl oder Navigation. Warnung, Erfolg und Fehler behalten ausschließlich ihre Statusbedeutung.
+`--color-active` kennzeichnet ausschließlich aktive Navigation und Auswahl. Der sichtbare Produktname bleibt neutral. `--color-route` kennzeichnet Bewegungsverläufe und `--color-location` den eigenen Standort, Zielmarker sowie kritische Daten. Warnung, Erfolg und Fehler behalten ausschließlich ihre Statusbedeutung.
 
 ## Typografie
 
-Cascadia Code ist die primäre Schriftfamilie für die Benutzeroberfläche. Zahlen verwenden tabellarische Ziffern.
+Cascadia Code ist die primäre Schriftfamilie für die Benutzeroberfläche. Zahlen verwenden tabellarische Ziffern. Die typografische Wirkung ist technisch, leicht und luftig; große Werte werden nicht durch starke Schriftschnitte, sondern durch Größe und freien Raum hervorgehoben.
 
 - Wortmarken und zentraler Systemname: `--font-wordmark-*`, Gewicht 400.
 - Primäre Inhaltsbezeichnungen: `--font-hero-*`, Gewicht 400.
@@ -116,16 +130,17 @@ Cascadia Code ist die primäre Schriftfamilie für die Benutzeroberfläche. Zahl
 
 - Mobil: bis einschließlich 767 px; einspaltig und nach Informationspriorität angeordnet.
 - Tablet: 768 px bis einschließlich 1023 px; zwei Spalten im Verhältnis 2:1.
-- Desktop: ab 1024 px; primäre Arbeitsfläche 66,666 %, Detailspalte 33,333 %.
+- Desktop: ab 1024 px; keine universelle 2:1-Teilung. Lage- und Sensoransichten nutzen ein 50:50-Grundraster. Die rechte Hälfte kann oben eine Karte über die volle Breite und unten zwei gleich breite Instrumentenfelder enthalten. Fahr- und Detailansichten dürfen eine große primäre Fläche mit nachgeordneten scharf getrennten Datenfeldern kombinieren.
 - Eng verbundene Elemente: `--space-8`; innerhalb einer Komponente: `--space-16`; zwischen Komponenten: `--space-24`; zwischen Abschnitten: `--space-48`; zwischen Hauptbereichen: `--space-64`.
 - Der primäre Inhalt erhält die größte verfügbare Fläche.
 - Lange vertikale und horizontale Linien trennen Bereiche mit `--border-width solid --color-border`.
+- Mobile Kartenansichten bleiben vollflächig. Informationen liegen als wenige, direkt auf die Karte bezogene HUD-Zonen am oberen oder unteren Rand; sie werden nicht in Karten oder schwebende Bedienfelder zerlegt.
 
 ## Oberflächen und Tiefe
 
 - Standardhintergrund ist `--color-background`; erhöhte, nicht schwebende Bereiche verwenden `--color-surface`.
 - Abgegrenzte Inhaltsbereiche sind rechteckig, transparent oder `--color-surface`, mit `--color-border` gerahmt. Sie werden nur für direkt vergleichbare Informationen verwendet.
-- Schwebende Overlays verwenden `--radius-overlay`, `--color-overlay-background` und `--overlay-blur`. Alle anderen Bereiche bleiben scharf.
+- Schwebende Overlays verwenden ausschließlich für Uhrzeit- und Karten-HUDs `--radius-overlay`, `--color-overlay-background` und `--overlay-blur`. Ihre untere Kante darf über `--overlay-gradient-depth` in die Karte auslaufen. Alle anderen Bereiche bleiben scharf.
 - Feine Divider sind sichtbaren Rahmen für allgemeine Layoutbereiche vorzuziehen. Vollständig deckende Flächen sind fokussierten Interaktionen vorbehalten.
 - Dezente Verläufe sind ausschließlich erlaubt, um eine Overlay-Kante in einen dynamischen Hintergrund zu überführen. Sie dürfen Kontrast oder Lesbarkeit nicht beeinträchtigen.
 - Keine dekorativen Schatten, keine Gradients außerhalb dieser Overlay-Überblendung, keine stark gerundeten Flächen, Pill-Buttons oder Glassmorphism-Komponenten verwenden.
@@ -158,6 +173,21 @@ Cascadia Code ist die primäre Schriftfamilie für die Benutzeroberfläche. Zahl
 - Komplexe Visualisierungen verwenden `--color-visual-base` und `--color-visual-detail`; Beschriftungen nutzen `--color-text-secondary`. Hervorgehobene Elemente liegen visuell über Hintergrund und Beschriftungen.
 - Hervorgehobene Verbindungselemente verwenden genau eine semantische Farbe mit `--stroke-emphasis` Linienbreite.
 - Datenvisualisierungen verwenden `--color-background`, Raster in `--color-border-subtle` und genau eine semantische Datenfarbe. Sekundäre Daten nutzen `--color-text-muted`; aktuelle oder kritische Daten nutzen `--color-critical`.
+
+### Karte, Route und Lage-HUD
+
+- Die Karte ist ein funktionaler, beinahe schwarzer Untergrund: Gebäude `--color-map-building`, Straßen `--color-map-road`, Beschriftungen `--color-map-label`. Sie darf nie hell, bunt oder topografisch dekorativ sein.
+- Routen sind eine einzelne, kantige Polylinie in `--color-route` mit `--stroke-emphasis`; ein zurückhaltender dunkler Schatten darf ausschließlich die Lesbarkeit auf der Karte sichern. Es gibt keine Verlaufsroute und keine mehrfarbigen Segmente.
+- Der eigene Standort ist ein `--color-location`-Punkt mit heller Kontur und, wenn Genauigkeit relevant ist, einem transparenten kritischen Radius. Ziele nutzen ein reduziertes Linienpiktogramm in derselben Farbe und eine kurze, gerade Verbindungslinie.
+- Kartenbeschriftungen bleiben sichtbar, liegen aber stets hinter Route, Standort und HUD. Karteninhalte erhalten keine Kachelrahmen.
+- Eine zentrale Uhr darf oben als breite, dunkle HUD-Fläche mit ausgeprägten oberen Ecken erscheinen. In der mobilen Kartenansicht steht die Wortmarke zentriert darüber oder im ruhigen Kopfbereich.
+- Untere Karten-HUDs bestehen aus Textzeilen, kleiner Höhenprofilgrafik, Maßstab und einer scharf abgegrenzten Statusleiste. Die Statusleiste hat vier bis sechs gleich breite Zellen; nur der aktive Zustand ist grün.
+
+### Instrumentenansichten
+
+- Sensor-, Kompass- und Lageansichten folgen dem Desktop-50:50-Raster und großflächigen, randlosen Analyseflächen.
+- Instrumente sind als feine Liniengrafiken in neutralem Grau ausgeführt. Kritische Messwerte, Marker und Profile verwenden Rot/Orange, niemals Grün.
+- Nicht verfügbare Sensoren lassen ihre Fläche leer und zeigen mittig eine kurze, konkrete Ursache sowie gegebenenfalls eine kantige sekundäre Aktion. Es gibt keine Platzhalterillustrationen oder Skeletons.
 
 ## Interaktion, Bewegung und Operationalität
 
